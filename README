@@ -1,1 +1,5 @@
 Kernel mainline ppa downloader
+
+Requires: python-bs4 (beautiful soup)
+
+Ubuntu-gr forum topic: http://forum.ubuntu-gr.org/viewtopic.php?f=6&t=24119

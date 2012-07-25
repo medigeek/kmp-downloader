@@ -9,6 +9,8 @@ import platform
 from bs4 import BeautifulSoup
 import re
 import sys
+import subprocess
+import tempfile
 
 url = "http://kernel.ubuntu.com/~kernel-ppa/mainline/"
 print("Contacting {0}".format(url))
@@ -78,7 +80,7 @@ print("You chose: {0}".format(archs[sela-1]))
 # SELECT PACKAGES
 sel = -1
 while True:
-    sel = raw_input("Would you like to install kernel headers [Y/n]: ")
+    sel = raw_input("Would you like to download kernel headers [Y/n]: ")
     if sel == "":
         selkh = True
         break
@@ -93,7 +95,7 @@ while True:
 
 sel = -1
 while True:
-    sel = raw_input("Would you like to install kernel image [Y/n]: ")
+    sel = raw_input("Would you like to download kernel image [Y/n]: ")
     if sel == "":
         selki = True
         break
@@ -108,7 +110,7 @@ while True:
 
 sel = -1
 while True:
-    sel = raw_input("Would you like to install kernel extras [Y/n]: ")
+    sel = raw_input("Would you like to download kernel extras [Y/n]: ")
     if sel == "":
         selke = True
         break
@@ -123,15 +125,6 @@ while True:
 
 print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
         format(selkh, selki, selke))
-
-#21-Jul-2012 22:49 	5 	 
-#[ ]	linux-headers-3.5.0-030500-generic_3.5.0-030500.201207211835_amd64.deb	21-Jul-2012 22:42 	912K	 
-#[ ]	linux-headers-3.5.0-030500-generic_3.5.0-030500.201207211835_i386.deb	21-Jul-2012 22:49 	901K	 
-#[ ]	linux-headers-3.5.0-030500_3.5.0-030500.201207211835_all.deb	21-Jul-2012 22:35 	12M	 
-#[ ]	linux-image-3.5.0-030500-generic_3.5.0-030500.201207211835_amd64.deb	21-Jul-2012 22:42 	12M	 
-#[ ]	linux-image-3.5.0-030500-generic_3.5.0-030500.201207211835_i386.deb	21-Jul-2012 22:49 	11M	 
-#[ ]	linux-image-extra-3.5.0-030500-generic_3.5.0-030500.201207211835_amd64.deb	21-Jul-2012 22:42 	27M	 
-#[ ]	linux-image-extra-3.5.0-030500-generic_3.5.0-030500.201207211835_i386.deb
 
 # selk = selected kernel
 # sela = selected arch
@@ -158,9 +151,13 @@ for l in soup.find_all('a'):
         url = "{0}{1}".format(link, href)
         files.append(url)
 
+#Create temp folder
+tempfolder = tempfile.mkdtemp()
+print("Using temporary folder: {0}".format(tempfolder))
+
 for url in files:
-    #Using /tmp
-    os.chdir("/tmp/")
+    #Change directory to temp folder
+    os.chdir(tempfolder)
     file_name = url.split('/')[-1]
     u = urllib2.urlopen(url)
     f = open(file_name, 'wb')
@@ -183,3 +180,27 @@ for url in files:
         sys.stdout.write(status)
 
     f.close()
+
+# INSTALL PACKAGES
+sel = -1
+while True:
+    sel = raw_input("Would you like to install the downloaded packages? [Y/n]: ")
+    if sel == "":
+        selinst = True
+        break
+    if not sel in tuple("yYnN"):
+        continue
+    else:
+        if sel in tuple("yY"):
+            selinst = True
+        else:
+            selinst = False
+        break
+
+if selinst:
+    print("Installing packages... please type in your password if requested")
+    subprocess.call("sudo dpkg -i {0}/*.deb".format(tempfolder), shell=True)
+else:
+    print("Will not install packages")
+
+print("All done!")

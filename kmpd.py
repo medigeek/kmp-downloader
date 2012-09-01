@@ -219,4 +219,4 @@ if selinst:
 else:
     print("Will not install packages")
 
-print("All done!")
+raw_input("All done! Press any key to exit.")

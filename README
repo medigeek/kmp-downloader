@@ -4,6 +4,6 @@ Requires: python-bs4 (beautiful soup)
 
 Ubuntu-gr forum topic: http://forum.ubuntu-gr.org/viewtopic.php?f=6&t=24119
 
-You can download it using this quick link: https://github.com/medigeek/ubuntu-gr_forum_signature/tarball/master
+You can download it using this quick link: https://github.com/medigeek/kmp-downloader/tarball/master
 
-Save the archive and extract the files. Double click on `kmpd.py`. If you're not sure about an option, press Enter and it will select the default answer.
+Save the archive and extract the files. Double click on `kmpd.py` (execute in terminal). If you're not sure about an option, press Enter and it will select the default answer.

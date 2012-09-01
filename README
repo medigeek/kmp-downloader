@@ -1,8 +1,13 @@
 Kernel mainline ppa downloader
+=====
 
-Requires: python-bs4 (beautiful soup)
+Requirements
+----
 
-Ubuntu-gr forum topic: http://forum.ubuntu-gr.org/viewtopic.php?f=6&t=24119
+python-bs4 (beautiful soup)
+
+Instructions
+----
 
 You may download it using this quick link: https://github.com/medigeek/kmp-downloader/tarball/master
 
@@ -12,7 +17,13 @@ Save the archive and extract the files. Double click on `kmpd.py` (execute in te
 
     cd /tmp; rm -rf medigeek-kmp*; wget --no-check-certificate https://github.com/medigeek/kmp-downloader/tarball/master -O kmpd.tar.gz; tar xzf kmpd.tar.gz; cd medigeek-*; python kmpd.py
 
+Uninstall
+----
 To uninstall the kernel packages, remember to boot to a different kernel image first. Then you can use your favourite package manager to uninstall the packages. For example if you installed version 3.5.3, you can uninstall it using this command:
 
     sudo apt-get purge linux-image-3.5.3.* linux-image-extra-3.5.3.* linux-headers-3.5.3.*
+
+More info
+----
+Ubuntu-gr forum topic: http://forum.ubuntu-gr.org/viewtopic.php?f=6&t=24119
 

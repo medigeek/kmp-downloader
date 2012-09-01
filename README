@@ -6,6 +6,8 @@ Requirements
 
 python-bs4 (beautiful soup)
 
+    sudo apt-get install python-bs4
+
 Instructions
 ----
 

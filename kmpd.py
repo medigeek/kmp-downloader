@@ -28,6 +28,14 @@ import sys
 import subprocess
 import tempfile
 
+import argparse
+# PARSE ARGUMENTS
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('-d', '--disable-filter', action='store_true',
+help='Do not filter out release candidate versions')
+args = parser.parse_args()
+print(args)
+
 url = "http://kernel.ubuntu.com/~kernel-ppa/mainline/"
 print("Contacting {0}".format(url))
 source = urllib.urlopen(url).read()
@@ -39,16 +47,20 @@ kernels = list()
 rel = platform.release().replace("-generic","")
 for link in soup.find_all('a'):
     href = link.get('href')
-    if re.search("rc\d", href):
-        #If release candidate
-        continue
-    if href[0] == "v":
-        kver = href[1:-1] #strip first and last characters
-        rel = platform.release().replace("-generic","")
-        if kver > rel:
-            # If kernel newer than current one
-            #print("{0} > {1}".format(kver, rel))
-            kernels.append(href)
+    if not args.disable_filter:
+        #If filter is not disabled, apply all filters
+        if re.search("rc\d", href):
+            #If the version is a release candidate, bypass
+            continue
+        if href[0] == "v":
+            kver = href[1:-1] #strip first and last characters
+            rel = platform.release().replace("-generic","")
+            if kver > rel:
+                # If kernel newer than current one
+                #print("{0} > {1}".format(kver, rel))
+                kernels.append(href)
+    else:
+        kernels.append(href)
 
 # SELECT KERNEL
 i = 0

@@ -41,7 +41,7 @@ print("Contacting {0}".format(url))
 source = urllib.urlopen(url).read()
 #print(source)
 
-soup = BeautifulSoup(source)
+soup = BeautifulSoup(source, "html.parser")
 kernels = list()
 
 rel = platform.release().replace("-generic","")

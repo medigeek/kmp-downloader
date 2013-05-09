@@ -33,6 +33,8 @@ import argparse
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('-d', '--disable-filter', action='store_true',
 help='Do not filter out release candidate versions')
+parser.add_argument('-p', '--prefer-stable', action='store_true',
+help='Prefer latest stable version instead of latest release candidate of the same version (e.g. prefer v3.9-raring instead of v3.9-rc8-raring)')
 args = parser.parse_args()
 print(args)
 
@@ -60,7 +62,10 @@ for link in soup.find_all('a'):
                 #print("{0} > {1}".format(kver, rel))
                 kernels.append(href)
     else:
-        kernels.append(href)
+        if "saucy" in href:
+            continue
+        else:
+            kernels.append(href)
 
 # SELECT KERNEL
 i = 0
@@ -70,7 +75,14 @@ for k in kernels:
 selk = -1
 while not 0 < selk <= len(kernels):
     try:
-        defaultk = len(kernels)
+        if args.prefer_stable:
+            if re.search('-rc\d+-', kernels[-1]):
+                # If a release candidate is the last item in list
+                teststable = re.sub("-rc\d+-","-",kernels[-1])
+                if teststable in kernels:
+                    defaultk = kernels.index(teststable) + 1
+        else:
+            defaultk = len(kernels)
         sel = raw_input("Please enter an integer [{0}]: ".format(defaultk))
         if sel == "":
             selk = defaultk

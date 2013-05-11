@@ -62,10 +62,7 @@ for link in soup.find_all('a'):
                 #print("{0} > {1}".format(kver, rel))
                 kernels.append(href)
     else:
-        if "saucy" in href:
-            continue
-        else:
-            kernels.append(href)
+        kernels.append(href)
 
 # SELECT KERNEL
 i = 0

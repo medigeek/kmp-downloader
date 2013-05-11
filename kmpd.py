@@ -78,6 +78,8 @@ while not 0 < selk <= len(kernels):
                 teststable = re.sub("-rc\d+-","-",kernels[-1])
                 if teststable in kernels:
                     defaultk = kernels.index(teststable) + 1
+                else:
+                    defaultk = len(kernels)
         else:
             defaultk = len(kernels)
         sel = raw_input("Please enter an integer [{0}]: ".format(defaultk))

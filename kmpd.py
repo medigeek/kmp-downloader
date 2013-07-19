@@ -105,26 +105,26 @@ except:
 for a in archs:
     i += 1
     print("{0}. {1}".format(i, a))
-sel = -1
-while not 0 < sel <= len(archs):
+sela = -1
+while not 0 < sela <= len(archs):
     try:
-        sel = raw_input("Please enter an integer [{0}]: ".format(defaultarch))
-        if sel == "":
+        sela = raw_input("Please enter an integer [{0}]: ".format(defaultarch))
+        if sela == "":
             sela = defaultarch
             break
-        sela = int(sel)
+        sela = int(sela)
     except ValueError:
         continue
 print("You chose: {0}".format(archs[sela-1]))
 
 # SELECT PACKAGES
-sel = -1
+sel1 = -1
 while True:
-    sel = raw_input("Would you like to download kernel headers [Y/n]: ")
-    if sel == "":
+    sel1 = raw_input("Would you like to download kernel headers [Y/n]: ")
+    if sel1 == "":
         selkh = True
         break
-    if not sel in tuple("yYnN"):
+    if not sel1 in tuple("yYnN"):
         continue
     else:
         if sel in tuple("yY"):
@@ -133,31 +133,31 @@ while True:
             selkh = False
         break
 
-sel = -1
+sel2 = -1
 while True:
-    sel = raw_input("Would you like to download kernel image [Y/n]: ")
-    if sel == "":
+    sel2 = raw_input("Would you like to download kernel image [Y/n]: ")
+    if sel2 == "":
         selki = True
         break
-    if not sel in tuple("yYnN"):
+    if not sel2 in tuple("yYnN"):
         continue
     else:
-        if sel in tuple("yY"):
+        if sel2 in tuple("yY"):
             selki = True
         else:
             selki = False
         break
 
-sel = -1
+sel3 = -1
 while True:
-    sel = raw_input("Would you like to download kernel extras [Y/n]: ")
-    if sel == "":
+    sel3 = raw_input("Would you like to download kernel extras [Y/n]: ")
+    if sel3 == "":
         selke = True
         break
-    if not sel in tuple("yYnN"):
+    if not sel3 in tuple("yYnN"):
         continue
     else:
-        if sel in tuple("yY"):
+        if sel3 in tuple("yY"):
             selke = True
         else:
             selke = False
@@ -222,16 +222,16 @@ for url in files:
     f.close()
 
 # INSTALL PACKAGES
-sel = -1
+sel6 = -1
 while True:
-    sel = raw_input("Would you like to install the downloaded packages? [Y/n]: ")
-    if sel == "":
+    sel6 = raw_input("Would you like to install the downloaded packages? [Y/n]: ")
+    if sel6 == "":
         selinst = True
         break
-    if not sel in tuple("yYnN"):
+    if not sel6 in tuple("yYnN"):
         continue
     else:
-        if sel in tuple("yY"):
+        if sel6 in tuple("yY"):
             selinst = True
         else:
             selinst = False

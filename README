@@ -19,6 +19,10 @@ Save the archive and extract the files. Double click on `kmpd.py` (execute in te
 
     cd /tmp; rm -rf medigeek-kmp*; wget --no-check-certificate https://github.com/medigeek/kmp-downloader/tarball/master -O kmpd.tar.gz; tar xzf kmpd.tar.gz; cd medigeek-*; python kmpd.py
 
+If you want more options, e.g. disable the release candidate filter and/or prefer the latest stable release, check out the available arguments:
+
+    python kmpd.py --help
+
 Uninstall
 ----
 To uninstall the kernel packages, remember to boot to a different kernel image first. Then you can use your favourite package manager to uninstall the packages. For example if you installed version 3.5.3, you can uninstall it using this command:

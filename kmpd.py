@@ -62,10 +62,7 @@ for link in soup.find_all('a'):
                 #print("{0} > {1}".format(kver, rel))
                 kernels.append(href)
     else:
-        if "saucy" in href:
-            continue
-        else:
-            kernels.append(href)
+        kernels.append(href)
 
 # SELECT KERNEL
 i = 0
@@ -75,14 +72,13 @@ for k in kernels:
 selk = -1
 while not 0 < selk <= len(kernels):
     try:
+        defaultk = len(kernels)
         if args.prefer_stable:
             if re.search('-rc\d+-', kernels[-1]):
                 # If a release candidate is the last item in list
                 teststable = re.sub("-rc\d+-","-",kernels[-1])
                 if teststable in kernels:
                     defaultk = kernels.index(teststable) + 1
-        else:
-            defaultk = len(kernels)
         sel = raw_input("Please enter an integer [{0}]: ".format(defaultk))
         if sel == "":
             selk = defaultk

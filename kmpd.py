@@ -27,6 +27,8 @@ import re
 import sys
 import subprocess
 import tempfile
+# We need to use apt.VersionCompare(a,b) to compare debian package versions
+import apt
 
 import argparse
 # PARSE ARGUMENTS
@@ -57,7 +59,8 @@ for link in soup.find_all('a'):
         if href[0] == "v":
             kver = href[1:-1] #strip first and last characters
             rel = platform.release().replace("-generic","")
-            if kver > rel:
+            vc = apt.VersionCompare(kver, rel)
+            if vc > 0:
                 # If kernel newer than current one
                 #print("{0} > {1}".format(kver, rel))
                 kernels.append(href)

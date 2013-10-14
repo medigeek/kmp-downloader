@@ -28,9 +28,13 @@ import sys
 import subprocess
 import tempfile
 # We need to use apt.VersionCompare(a,b) to compare debian package versions
-import apt
+import apt_pkg
 
 import argparse
+
+# MODULE INIT
+apt_pkg.init()
+
 # PARSE ARGUMENTS
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('-d', '--disable-filter', action='store_true',
@@ -59,7 +63,7 @@ for link in soup.find_all('a'):
         if href[0] == "v":
             kver = href[1:-1] #strip first and last characters
             rel = platform.release().replace("-generic","")
-            vc = apt.VersionCompare(kver, rel)
+            vc = apt_pkg.version_compare(kver, rel)
             if vc > 0:
                 # If kernel newer than current one
                 #print("{0} > {1}".format(kver, rel))

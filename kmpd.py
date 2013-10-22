@@ -126,7 +126,7 @@ while True:
     if not sel1 in tuple("yYnN"):
         continue
     else:
-        if sel in tuple("yY"):
+        if sel1 in tuple("yY"):
             selkh = True
         else:
             selkh = False

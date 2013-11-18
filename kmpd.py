@@ -52,7 +52,7 @@ source = urllib.urlopen(url).read()
 soup = BeautifulSoup(source, "html.parser")
 kernels = list()
 
-rel = platform.release().replace("-generic","")
+rel = platform.release().replace("-\w*","")
 for link in soup.find_all('a'):
     href = link.get('href')
     if not args.disable_filter:
@@ -62,7 +62,7 @@ for link in soup.find_all('a'):
             continue
         if href[0] == "v":
             kver = href[1:-1] #strip first and last characters
-            rel = platform.release().replace("-generic","")
+            rel = platform.release().replace("-\w*","")
             vc = apt_pkg.version_compare(kver, rel)
             if vc > 0:
                 # If kernel newer than current one

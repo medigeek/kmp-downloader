@@ -44,7 +44,9 @@ help='Prefer latest stable version instead of latest release candidate of the sa
 parser.add_argument('-l', '--latest-ver', action='store_true',
 help='Chooses last version of each branch')
 parser.add_argument('-u', '--update', action='store_true',
-help='Upgrade kernel installed. Should activate -l')
+help='Upgrade kernel installed')
+parser.add_argument('-y', '--daily', action='store_true',
+help='Download daily build kernel (with next patches)')
 args = parser.parse_args()
 print(args)
 
@@ -81,10 +83,20 @@ if args.update:
 	except IndexError:
 		pass
 
+if args.daily:
+    # args.disable_filter = True
+    pass
+
+if args.update:
+    args.latest_ver = True
+
 selk = -1
 for link in soup.find_all('a'):
     href = link.get('href')
-    if not args.disable_filter:
+    if href[0:5] == "daily" and args.daily:
+        kernels.append(str(href)+"current/")
+        selk = 0
+    elif not args.disable_filter:
 		#If filter is not disabled, apply all filters
 			if not args.latest_ver:
 				selk = 0
@@ -140,9 +152,9 @@ for link in soup.find_all('a'):
 										kernels = [href]
 										selk = 1
 								except:
-									pass								
+									pass
     else:
-	selk = 0
+        selk = 0
         kernels.append(href)
 if previous_href != "":
 	kernels.append(previous_href)

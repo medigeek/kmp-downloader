@@ -60,7 +60,7 @@ kernels = list()
 
 rel = re.sub('-\w*', '', platform.release())
 print("Current system kernel release version: {0}".format(rel))
-previous_version = [-1,-1,-1,-1]
+release = re.sub('([0-9])\.([0-9]{1,2})\.([0-9]{1,2})','',rel);
 previous_href = ""
 upgrade = ""
 actual_ver = []

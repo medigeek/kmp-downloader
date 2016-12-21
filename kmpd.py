@@ -239,8 +239,9 @@ for url in files:
         f.write(buffer)
         p = float(file_size_dl) / file_size
         status = r"{0}  [{1:.2%}]".format(file_size_dl, p)
-        status = status + chr(8)*(len(status)+1)
-        sys.stdout.write(status)
+        status = "\r\033[K" + status
+        sys.stderr.write(status)
+    sys.stderr.write("\r\033[K")
 
     f.close()
 

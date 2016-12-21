@@ -198,21 +198,21 @@ link = "http://kernel.ubuntu.com/~kernel-ppa/mainline/{0}".format(kernels[selk-1
 print("Contacting {0}".format(link))
 source = urllib.urlopen(link).read()
 soup = BeautifulSoup(source, 'html.parser')
-files = list()
+files = set()
 for l in soup.find_all('a'):
     href = l.get('href')
     rxstr = "linux-headers-[^_]*(?:-{0}_.*_{1}|.*_all)\.deb".format(flavors[self-1],archs[sela-1])
     if selkh and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
+        files.add(url)
     rxstr = "linux-image-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
     if selki and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
+        files.add(url)
     rxstr = "linux-image-extra-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
     if selke and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
+        files.add(url)
 
 #Create temp folder
 tempfolder = tempfile.mkdtemp()

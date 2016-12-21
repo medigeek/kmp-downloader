@@ -177,7 +177,7 @@ print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
 link = "http://kernel.ubuntu.com/~kernel-ppa/mainline/{0}".format(kernels[selk-1])
 print("Contacting {0}".format(link))
 source = urllib.urlopen(link).read()
-soup = BeautifulSoup(source)
+soup = BeautifulSoup(source, 'html.parser')
 files = list()
 for l in soup.find_all('a'):
     href = l.get('href')

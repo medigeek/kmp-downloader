@@ -53,6 +53,7 @@ soup = BeautifulSoup(source, "html.parser")
 kernels = list()
 
 rel = re.sub('-\w*', '', platform.release())
+if rel.endswith('.0'): rel = rel[:-2]
 print("Current system kernel release version: {0}".format(rel))
 for link in soup.find_all('a'):
     href = link.get('href')

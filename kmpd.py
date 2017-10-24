@@ -53,6 +53,7 @@ soup = BeautifulSoup(source, "html.parser")
 kernels = list()
 
 rel = re.sub('-\w*', '', platform.release())
+if rel.endswith('.0'): rel = rel[:-2]
 print("Current system kernel release version: {0}".format(rel))
 for link in soup.find_all('a'):
     href = link.get('href')
@@ -120,6 +121,25 @@ while not 0 < sela <= len(archs):
         continue
 print("You chose: {0}".format(archs[sela-1]))
 
+# SELECT FLAVOR
+i = 0
+flavors = ("generic", "lowlatency")
+defaultflavor = 1
+for f in flavors:
+    i += 1
+    print("{0}. {1}".format(i, f))
+self = -1
+while not 0 < self <= len(flavors):
+    try:
+        self = raw_input("Please enter an integer [{0}]: ".format(defaultflavor))
+        if self == "":
+            self = defaultflavor
+            break
+        self = int(self)
+    except ValueError:
+        continue
+print("You chose: {0}".format(flavors[self-1]))
+
 # SELECT PACKAGES
 sel1 = -1
 while True:
@@ -171,28 +191,29 @@ print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
 
 # selk = selected kernel
 # sela = selected arch
+# self = selected flavor
 # selkh = kernel headers? T/F
 # selki = kernel image? T/F
 # selke = kernel extra? T/F
 link = "http://kernel.ubuntu.com/~kernel-ppa/mainline/{0}".format(kernels[selk-1])
 print("Contacting {0}".format(link))
 source = urllib.urlopen(link).read()
-soup = BeautifulSoup(source)
-files = list()
+soup = BeautifulSoup(source, 'html.parser')
+files = set()
 for l in soup.find_all('a'):
     href = l.get('href')
-    rxstr = "linux-headers.*_(?:{0}|all)\.deb".format(archs[sela-1])
+    rxstr = "linux-headers-[^_]*(?:-{0}_.*_{1}|.*_all)\.deb".format(flavors[self-1],archs[sela-1])
     if selkh and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
-    rxstr = "linux-image.*_{0}\.deb".format(archs[sela-1])
+        files.add(url)
+    rxstr = "linux-image-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
     if selki and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
-    rxstr = "linux-image-extra.*_{0}\.deb".format(archs[sela-1])
+        files.add(url)
+    rxstr = "linux-image-extra-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
     if selke and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
-        files.append(url)
+        files.add(url)
 
 #Create temp folder
 tempfolder = tempfile.mkdtemp()
@@ -219,8 +240,9 @@ for url in files:
         f.write(buffer)
         p = float(file_size_dl) / file_size
         status = r"{0}  [{1:.2%}]".format(file_size_dl, p)
-        status = status + chr(8)*(len(status)+1)
-        sys.stdout.write(status)
+        status = "\r\033[K" + status
+        sys.stderr.write(status)
+    sys.stderr.write("\r\033[K")
 
     f.close()
 

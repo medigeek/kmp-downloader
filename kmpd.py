@@ -186,8 +186,23 @@ while True:
             selke = False
         break
 
-print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
-        format(selkh, selki, selke))
+sel4 = -1
+while True:
+    sel4 = raw_input("Would you like to download kernel modules [Y/n]: ")
+    if sel4 == "":
+        selkm = True
+        break
+    if not sel4 in tuple("yYnN"):
+        continue
+    else:
+        if sel4 in tuple("yY"):
+            selkm = True
+        else:
+            selkm = False
+        break
+
+print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}, Kernel modules: {3}".
+        format(selkh, selki, selke, selkm))
 
 # selk = selected kernel
 # sela = selected arch
@@ -195,6 +210,7 @@ print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
 # selkh = kernel headers? T/F
 # selki = kernel image? T/F
 # selke = kernel extra? T/F
+# selkm = kernel modules? T/F
 link = "http://kernel.ubuntu.com/~kernel-ppa/mainline/{0}".format(kernels[selk-1])
 print("Contacting {0}".format(link))
 source = urllib.urlopen(link).read()
@@ -212,6 +228,10 @@ for l in soup.find_all('a'):
         files.add(url)
     rxstr = "linux-image-extra-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
     if selke and re.search(rxstr, href):
+        url = "{0}{1}".format(link, href)
+        files.add(url)
+    rxstr = "linux-modules-[^_]*-{0}_.*_{1}\.deb".format(flavors[self-1],archs[sela-1])
+    if selkm and re.search(rxstr, href):
         url = "{0}{1}".format(link, href)
         files.add(url)
 

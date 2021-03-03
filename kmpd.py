@@ -3,6 +3,7 @@
 # Requires: python-bs4
 
 # Copyright (c) 2012  Savvas Radevic <vicedar@gmail.com>
+# Copyright (c) 2021  Brian Long <brian@yateslong.us>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -17,10 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import urlparse
 import urllib
 import os
-import urllib2
 import platform
 from bs4 import BeautifulSoup
 import re
@@ -46,7 +44,7 @@ print(args)
 
 url = "http://kernel.ubuntu.com/~kernel-ppa/mainline/"
 print("Contacting {0}".format(url))
-source = urllib.urlopen(url).read()
+source = urllib.request.urlopen(url).read()
 #print(source)
 
 soup = BeautifulSoup(source, "html.parser")
@@ -87,7 +85,7 @@ while not 0 < selk <= len(kernels):
                 teststable = re.sub("-rc\d+-","-",kernels[-1])
                 if teststable in kernels:
                     defaultk = kernels.index(teststable) + 1
-        sel = raw_input("Please enter an integer [{0}]: ".format(defaultk))
+        sel = input("Please enter an integer [{0}]: ".format(defaultk))
         if sel == "":
             selk = defaultk
             break
@@ -112,7 +110,7 @@ for a in archs:
 sela = -1
 while not 0 < sela <= len(archs):
     try:
-        sela = raw_input("Please enter an integer [{0}]: ".format(defaultarch))
+        sela = input("Please enter an integer [{0}]: ".format(defaultarch))
         if sela == "":
             sela = defaultarch
             break
@@ -131,7 +129,7 @@ for f in flavors:
 self = -1
 while not 0 < self <= len(flavors):
     try:
-        self = raw_input("Please enter an integer [{0}]: ".format(defaultflavor))
+        self = input("Please enter an integer [{0}]: ".format(defaultflavor))
         if self == "":
             self = defaultflavor
             break
@@ -143,7 +141,7 @@ print("You chose: {0}".format(flavors[self-1]))
 # SELECT PACKAGES
 sel1 = -1
 while True:
-    sel1 = raw_input("Would you like to download kernel headers [Y/n]: ")
+    sel1 = input("Would you like to download kernel headers [Y/n]: ")
     if sel1 == "":
         selkh = True
         break
@@ -158,7 +156,7 @@ while True:
 
 sel2 = -1
 while True:
-    sel2 = raw_input("Would you like to download kernel image [Y/n]: ")
+    sel2 = input("Would you like to download kernel image [Y/n]: ")
     if sel2 == "":
         selki = True
         break
@@ -173,7 +171,7 @@ while True:
 
 sel3 = -1
 while True:
-    sel3 = raw_input("Would you like to download kernel extras [Y/n]: ")
+    sel3 = input("Would you like to download kernel extras [Y/n]: ")
     if sel3 == "":
         selke = True
         break
@@ -197,7 +195,7 @@ print("Kernel headers: {0}, Kernel image: {1}, Kernel extras: {2}".
 # selke = kernel extra? T/F
 link = "http://kernel.ubuntu.com/~kernel-ppa/mainline/{0}".format(kernels[selk-1])
 print("Contacting {0}".format(link))
-source = urllib.urlopen(link).read()
+source = urllib.request.urlopen(link).read()
 soup = BeautifulSoup(source, 'html.parser')
 files = set()
 for l in soup.find_all('a'):
@@ -223,10 +221,9 @@ for url in files:
     #Change directory to temp folder
     os.chdir(tempfolder)
     file_name = url.split('/')[-1]
-    u = urllib2.urlopen(url)
+    u = urllib.request.urlopen(url)
     f = open(file_name, 'wb')
-    meta = u.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
+    file_size = int(u.headers.get("Content-Length")[0])
     print("Downloading: {0} Bytes: {1}".format(url, file_size))
 
     file_size_dl = 0
@@ -249,7 +246,7 @@ for url in files:
 # INSTALL PACKAGES
 sel6 = -1
 while True:
-    sel6 = raw_input("Would you like to install the downloaded packages? [Y/n]: ")
+    sel6 = input("Would you like to install the downloaded packages? [Y/n]: ")
     if sel6 == "":
         selinst = True
         break
@@ -268,4 +265,4 @@ if selinst:
 else:
     print("Will not install packages")
 
-raw_input("All done! Press [Enter] key to exit.")
+input("All done! Press [Enter] key to exit.")
